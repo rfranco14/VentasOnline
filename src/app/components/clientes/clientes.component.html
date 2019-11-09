@@ -1,0 +1,32 @@
+<div class="card border-primary mb-3">
+        <div class="card-header">Clientes</div>
+        <div class="card-body text-primary">
+            <h5 class="card-title">Listado de clientes</h5>
+            <div class="my-2 text-left">
+                <button class="btn btn-rounded btn-primary" type="button" [routerLink]="['home']">
+                    Crear Cliente
+                </button>
+            </div>
+            <div *ngIf= "clientes?.length == 0" class="alert alert-info">
+                No hay registros en la base de datos
+            </div>
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Nit</th>
+                        <th>Dpi</th>
+                        <th>Nombre</th>
+                        <th>Direccion</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let clientes of clientes">
+                        <td>{{clientes.nit}}</td>
+                        <td>{{clientes.dpi}}</td>
+                        <td>{{clientes.nombre}}</td>
+                        <td>{{clientes.direccion}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>

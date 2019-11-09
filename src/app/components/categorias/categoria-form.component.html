@@ -1,0 +1,28 @@
+<div class="Card bg-dark text-while">
+  <div class="card-header">{{ titulo }}</div>
+  <div class="card-body">
+    <form #categoriaForm="ngForm">
+      <div class="form-group row">
+        <label for="descripcion" class="col-form-label col-sm-2">
+          Descripcion
+        </label>
+        <div class="col-sm-6">
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="categoriaDTO.descripcion"
+            name="descripcion"
+            #descripcion="ngModel"
+          />
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-sm-6">
+          <button class="btn btn-primary" (click)="create()" role="button">
+            Crear
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
