@@ -18,9 +18,8 @@ import { ModalProductoService } from './service/modal-producto.service';
 export class ProductoFormComponent implements OnInit {
   titulo: string;
   @Input() producto: Producto;
-  @Input() id: number;
   categorias: Categoria[];
-  tipoEmpaque: TipoEmpaque[] = [];
+  tipoEmpaque: TipoEmpaque[];
   // productoDTO: ProductoCreacionDTO = new ProductoCreacionDTO();
 
   constructor(
@@ -28,30 +27,27 @@ export class ProductoFormComponent implements OnInit {
     private tipoempaqueService: TipoempaqueService,
     private productoService: ProductoService,
     private router: Router,
-    private modalProductoService: ModalProductoService) {
-  }
+    public modalProductoService: ModalProductoService) {}
 
   ngOnInit() {
-    this.categoriaService.getCategorias().subscribe(categorias => this.categorias = categorias);
-    this.tipoempaqueService.getTipoEmpaque().subscribe(tipoEmpaque => this.tipoEmpaque = tipoEmpaque);
-    /*if (this.id) {
-      this.producto = new ProductoCreacionDTO();
-      this.titulo = 'Agregar';
-    } else {
-      this.titulo = 'Modificar';
-    }*/
+    this.categoriaService.getCategorias().subscribe((response: any) => this.categorias = response as Categoria[]);
+    this.tipoempaqueService.getTipoEmpaques().subscribe((response: any) => this.tipoEmpaque = response as TipoEmpaque[]);
   }
 
-  create(): void {
+  create() {
     console.log(this.producto);
-    /*this.producto.codigoCategoria = this.producto.categoria.codigoCategoria;
-    this.producto.codigoEmpaque = this.producto.tipoEmpaque.codigoEmpaque;*/
-    this.productoService.create(this.producto).subscribe(
+    const nuevo = new ProductoCreacionDTO();
+    nuevo.codigoCategoria = this.producto.categoria.codigoCategoria;
+    nuevo.codigoEmpaque = this.producto.tipoEmpaque.codigoEmpaque;
+    nuevo.descripcion = this.producto.descripcion;
+    this.productoService.create(nuevo).subscribe(
       producto => {
-        this.router.navigate(['/producto']);
         swal.fire('Nuevo producto', `El producto ${this.producto.descripcion} ha sido creado con exito!!!`, 'success');
-        // this.router.navigate(['/productos']);
+        producto.categoria = this.producto.categoria;
+        producto.tipoEmpaque = this.producto.tipoEmpaque;
+        this.modalProductoService.notificarCambio.emit(producto);
         this.modalProductoService.cerrarmodal();
+        this.router.navigateByUrl('/productos');
       },
       error => {
         swal.fire('Nuevo Producto', `Error code ${error.status}`, 'error');
@@ -65,17 +61,32 @@ export class ProductoFormComponent implements OnInit {
     nuevo.codigoEmpaque = this.producto.codigoEmpaque;
     nuevo.descripcion = this.producto.descripcion;
     this.productoService.update(this.producto.codigoProducto, nuevo).subscribe(
-      () => { 
+      () => {
        /* this.router.navigate(['/producto']);*/
-        swal.fire('Actualizar Producto', `El producto ${this.producto.descripcion} ha sido actualizado!!`, 'success');
+        swal.fire('Actualizar Producto', `El producto ${nuevo.descripcion} ha sido actualizado!!`, 'success');
         /*console.log('Respuesta' + JSON.stringify(this.producto));*/
+        this.modalProductoService.notificarCambio.emit(this.producto);
         this.modalProductoService.cerrarmodal();
-        this.producto = null;
+        this.router.navigate(['/productos']);
       }
     );
   }
 
   cerrarModal(): void {
     this.modalProductoService.cerrarmodal();
+  }
+
+  compararCategoria(o1: Categoria, o2: Categoria): boolean {
+    if (o1 === undefined && o2 === undefined) {
+      return true;
+    }
+    return o1 === null || o2 === null || o1 === undefined || o2 === undefined ? false : o1.codigoCategoria === o2.codigoCategoria;
+  }
+
+  compararTipoEmpaque(o1: TipoEmpaque, o2: TipoEmpaque): boolean {
+    if (o1 === undefined && o2 === undefined) {
+      return true;
+    }
+    return o1 === null || o2 === null || o1 === undefined || o2 === undefined ? false : o1.codigoEmpaque === o2.codigoEmpaque;
   }
 }

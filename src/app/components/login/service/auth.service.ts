@@ -35,7 +35,7 @@ export class AuthService {
   }
 
   login(usuario: Usuario): Observable<any> {
-    const urlEndPoint = 'https://localhost:44370/api/v1/Cuentas/Login';
+    const urlEndPoint = 'https://localhost:443/api/v1/Cuentas/Login';
     const httpHeaders = new HttpHeaders({
       'Content-Type': 'application/json'
     });

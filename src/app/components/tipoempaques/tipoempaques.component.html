@@ -1,26 +1,38 @@
+<app-tipo-empaque-form [tipoEmpaque] = "tipoEmpaqueSeleccionado"></app-tipo-empaque-form>
 <div class="card border-primary mb-3">
         <div class="card-header">Tipo Empaque</div>
         <div class="card-body text-primary">
             <h5 class="card-title">Listado de Tipos de Empaque</h5>
             <div class="my-2 text-left">
-                <button class="btn btn-rounded btn-primary" type="button" [routerLink]="['home']">
+                <button class="btn btn-rounded btn-primary" type="button" (click) = "abrirModal()">
                     Crear Tipo Empaque
                 </button>
             </div>
             <div *ngIf= "tipoempaques?.length == 0" class="alert alert-info">
                 No hay registros en la base de datos
             </div>
-            <table class="table table-bordered table-striped">
+            <table class="table table-bordered table-striped" style="margin-top: 50px">
                 <thead>
                     <tr>
+                        <th>Codigo</th>
                         <th>Descripcion</th>
+                        <th>Editar</th>
+                        <th>Eliminar</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr *ngFor="let tipoempaques of tipoempaques">
+                        <td>{{tipoempaques.codigoEmpaque}}</td>
                         <td>{{tipoempaques.descripcion}}</td>
+                        <td>
+                            <button (click) = "abrirModal(tipoempaques)" type="button" name="Editar" class="btn btn-primary btn-sm">Editar</button>
+                        </td>
+                        <td>
+                            <button (click) = "delete(tipoempaques)" type="button" name="Eliminar" class="btn btn-danger btn-sm">Eliminar</button>
+                        </td>
                     </tr>
                 </tbody>
             </table>
+            <app-paginador *ngIf="paginador" [paginador] = "paginador"></app-paginador>
         </div>
     </div>

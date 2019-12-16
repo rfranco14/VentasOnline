@@ -1,6 +1,3 @@
-<!--app-producto-form *ngIf="!id && modalProductoService.modal"></app-producto-form>
-<app-producto-form *ngIf="id && modalProductoService.modal" [producto]="productoSeleccionado" [id] ="id"></app-producto-form>
--->
 <app-producto-form [producto] = "productoSeleccionado"></app-producto-form>
 <div class="card border-primary mb-3">
         <div class="card-header">Productos</div>
@@ -16,8 +13,7 @@
 
             <table class="table table-bordered table-striped" style="margin-top: 50px">
                 <thead>
-                    <tr>
-                        
+                    <tr>                
                         <th>Codigo</th>
                         <th>Descripcion</th>
                         <th>Categoria</th>

@@ -1,5 +1,6 @@
 import { Categoria } from '../categorias/categoria';
 import { TipoEmpaque } from '../tipoempaques/tipo-empaque';
+
 export class Producto {
     codigoProducto: number;
     codigoCategoria: number;

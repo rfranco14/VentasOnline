@@ -10,21 +10,23 @@ import { CategoriaCreacionDTO } from '../categoria-creacion-dto';
   providedIn: 'root'
 })
 export class CategoriaService {
-  private urlEndPoint = 'https://localhost:44370/api/v1';
-
+  private urlEndPoint = 'https://localhost:443/api/v1';
   constructor(private httpCliente: HttpClient, private router: Router) { }
 
-  /*getData(url: string) {
-    const headers = new HttpHeaders();
-    return this._httpCliente.get<Categoria[]>(`${this.API_URL}/${url}`, {headers});
-  }*/
+  getData(url: string) {
+    return this.httpCliente.get(`${this.urlEndPoint}/${url}`);
+  }
+
+public getCategoriasPage(page?: number): Observable<any> {
+  return this.httpCliente.get(`${this.urlEndPoint}/categorias/page/${page}`);
+}
 
   getCategorias() {
-    return this.httpCliente.get<Categoria[]>(`${this.urlEndPoint}/Categorias`);
+    return this.getData('/categorias');
   }
 
   create(categoria: CategoriaCreacionDTO): Observable<Categoria> {
-    return this.httpCliente.post(`${this.urlEndPoint}/Categorias`, categoria)
+    return this.httpCliente.post(`${this.urlEndPoint}/categorias`, categoria)
       .pipe(
         map((response: any) => response as Categoria),
         catchError(e => {
@@ -36,12 +38,12 @@ export class CategoriaService {
       );
   }
 
-  delete(id: number): Observable<Categoria> {
-    return this.httpCliente.delete<Categoria>(`${this.urlEndPoint}/Categorias/${id}`).pipe();
+ delete(id: number): Observable<Categoria> {
+    return this.httpCliente.delete<Categoria>(`${this.urlEndPoint}/categorias/${id}`).pipe();
   }
 
   update(id: number, categoriaCreacionDTO: CategoriaCreacionDTO): Observable<any> {
-    return this.httpCliente.put<any>(`${this.urlEndPoint}/Categorias/${id}`, categoriaCreacionDTO).pipe(
+    return this.httpCliente.put<any>(`${this.urlEndPoint}/categorias/${id}`, categoriaCreacionDTO).pipe(
       catchError(e => {
         if (e.status === 400) {
           return throwError(e);
@@ -55,7 +57,7 @@ export class CategoriaService {
     return this.httpCliente.get<Categoria>(`${this.urlEndPoint}/Categorias${id}`).pipe(
       catchError(e => {
         if (e.status !== 401) {
-          this.router.navigate(['/Categorias/']);
+          this.router.navigate(['/categorias/']);
         }
         return throwError(e);
       })

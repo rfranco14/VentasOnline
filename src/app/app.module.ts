@@ -8,6 +8,7 @@ import { HomeComponent } from './components/home/home.component';
 import { APP_ROUTING } from './app.routes';
 import { CategoriasComponent } from './components/categorias/categorias.component';
 import { CategoriaService } from './components/categorias/service/categoria.service';
+import {  TipoempaqueService } from './components/tipoempaques/service/tipoempaque.service';
 import { HttpClientModule, HttpInterceptor, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenInterceptor } from './components/login/interceptors/token';
 import { LoginComponent } from './components/login/login.component';
@@ -28,6 +29,9 @@ import { TipoempaquesComponent } from './components/tipoempaques/tipoempaques.co
 import { ProductoFormComponent } from './components/productos/producto-form.component';
 import { AuthInterceptor } from './components/login/interceptors/auth.interceptor';
 import { CategoriaFormComponent } from './components/categorias/categoria-form.component';
+import { PaginadorComponent } from './components/paginador/paginador.component';
+import { TipoEmpaqueFormComponent } from './components/tipoempaques/tipo-empaque-form.component';
+import { EmailClienteFormComponent } from './components/emailclientes/email-cliente-form.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +55,10 @@ import { CategoriaFormComponent } from './components/categorias/categoria-form.c
     TelefonoproveedoresComponent,
     TipoempaquesComponent,
     ProductoFormComponent,
-    CategoriaFormComponent
+    CategoriaFormComponent,
+    PaginadorComponent,
+    TipoEmpaqueFormComponent,
+    EmailClienteFormComponent
   ],
   imports: [
     BrowserModule,

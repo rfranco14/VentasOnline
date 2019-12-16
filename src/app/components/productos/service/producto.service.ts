@@ -12,7 +12,7 @@ import { ProductoCreacionDTO } from '../producto-creacion-dto';
   providedIn: 'root'
 })
 export class ProductoService {
-  private urlEndPoint = 'https://localhost:44370/api/v1';
+  private urlEndPoint = 'https://localhost:443/api/v1';
 
   constructor(private httpCliente: HttpClient, private router: Router) { }
 
@@ -45,7 +45,9 @@ export class ProductoService {
   }
 
   delete(id: number): Observable<Producto> {
-   return this.httpCliente.delete<Producto>(`${this.urlEndPoint}/producto/${id}`).pipe();
+   return this.httpCliente.delete<Producto>(`${this.urlEndPoint}/producto/${id}`).pipe(catchError(e => {
+    return throwError(e);
+   }));
   }
 
   update(id: number, productoCreacionDTO: ProductoCreacionDTO): Observable<any> {

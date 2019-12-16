@@ -5,7 +5,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
   providedIn: 'root'
 })
 export class ClienteService {
-  private API_URL = 'https://localhost:44370/api/v1';
+  private API_URL = 'https://localhost:443/api/v1';
   private token = '';
 
   constructor(private _httpCliente: HttpClient) { }

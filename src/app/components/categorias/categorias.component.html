@@ -1,9 +1,10 @@
+<app-categoria-form [categoria] = "categoriaSeleccionado"></app-categoria-form>
 <div class="card border-primary mb-3">
     <div class="card-header">Categorias</div>
     <div class="card-body text-primary">
         <h5 class="card-title">Listado de categorias</h5>
         <div class="my-2 text-left">
-            <button class="btn btn-primary" type="button" [routerLink]="['/categoriaForm']">
+            <button class="btn btn-primary" type="button" (click) = "abrirModal()">
                 Crear Categoria
             </button>
         </div>
@@ -25,7 +26,7 @@
                     <td>{{categorias.codigoCategoria}}</td>
                     <td>{{categorias.descripcion}}</td>
                     <td>
-                        <button type="button" name="Editar" class="btn btn-primary btn-sm">Editar</button>
+                        <button (click) = "abrirModal(categorias)" type="button" name="Editar" class="btn btn-primary btn-sm">Editar</button>
                     </td>
                     <td>
                         <button (click)= "delete(categorias)" type="button" name="Eliminar" class="btn btn-danger btn-sm">Eliminar</button>
@@ -33,5 +34,6 @@
                 </tr>
             </tbody>
         </table>
+        <app-paginador *ngIf="paginador" [paginador] = "paginador"></app-paginador>
     </div>
 </div>

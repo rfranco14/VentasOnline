@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ProductoService } from './service/producto.service';
 import { Producto } from './producto';
 import swal from 'sweetalert2';
+import { switchAll } from 'rxjs/operators';
 import { ModalProductoService } from './service/modal-producto.service';
-import { ProductoCreacionDTO } from './producto-creacion-dto';
 
 @Component({
   selector: 'app-productos',
@@ -13,7 +13,7 @@ import { ProductoCreacionDTO } from './producto-creacion-dto';
 export class ProductosComponent implements OnInit {
   productos: any[];
   productoSeleccionado: Producto;
-  id: number;
+  tipo: string;
 
   constructor(private productosService: ProductoService, private modalProductoService: ModalProductoService) {
     this.productosService.getProducto().subscribe((data: any) => {
@@ -22,7 +22,18 @@ export class ProductosComponent implements OnInit {
   }
 
   ngOnInit() {
-
+    this.modalProductoService.notificarCambio.subscribe(producto => {
+      if (this.tipo === 'new') {
+        this.productos.push(producto);
+      } else if (this.tipo === 'update') {
+        this.productos = this.productos.map(productoOriginal => {
+          if (producto.codigoProducto === productoOriginal.codigoProducto) {
+            productoOriginal = producto;
+          }
+          return productoOriginal;
+        });
+      }
+    });
   }
 
   delete(producto: Producto): void {
@@ -41,7 +52,7 @@ export class ProductosComponent implements OnInit {
     }).then((result) => {
       this.productosService.delete(producto.codigoProducto).subscribe(
         () => {
-          this.productos = this.productos.filter(prod => prod !== producto)
+          this.productos = this.productos.filter(prod => prod !== producto);
           swal.fire('Producto eliminado!',
             `Producto ${producto.descripcion} eliminado con éxito!`,
             'success');
@@ -52,16 +63,13 @@ export class ProductosComponent implements OnInit {
 
   abrirModal(producto?: Producto) {
     if (producto) {
-     /* this.productoSeleccionado = new Producto();
-      this.productoSeleccionado.codigoCategoria = producto.categoria.codigoCategoria;
-      this.productoSeleccionado.codigoEmpaque = producto.tipoEmpaque.codigoEmpaque;
-      this.productoSeleccionado.descripcion = producto.descripcion;
-      this.id = producto.codigoProducto;*/
       this.productoSeleccionado = producto;
-      this.modalProductoService.abrirModal();
-    } /*else {
-      this.id = null;
-    }*/
+      this.tipo = 'update';
+    } else {
+      this.tipo = 'new';
+      this.productoSeleccionado = new Producto();
+    }
+    this.modalProductoService.abrirModal();
   }
 
 }
